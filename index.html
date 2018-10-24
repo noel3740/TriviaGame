@@ -17,14 +17,46 @@
 <body>
     <main class="container">
         <!--The header div-->
-        <header class="jumbotron-fluid">
+        <header class="jumbotron-fluid mb-5">
             <h1 class="display-3 text-center">Trivia Game</h1>
         </header>
 
-        <section>
+        <section class="startTheGameSection">            
             <div class="row">
-                <h2>Time Remaining: <span id="timeRemainingSpan"></span></h2>
+                <div class="col-sm-12 ">
+                    <button id="startButton" class="btn btn-primary btn-lg btn-block">Start</button>
+                </div>
             </div>
+        </section>
+
+        <section class="theGameSection text-center">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>Time Remaining: <span id="timeRemaining"></span></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <p id="question">This is a question</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-outline-secondary btn-block mb-1">This is answer one.</button>
+                </div>
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-outline-secondary btn-block mb-1">This is answer two.</button>
+                </div>
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-outline-secondary btn-block mb-1">This is answer three.</button>
+                </div>
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-outline-secondary btn-block mb-1">This is answer four.</button>
+                </div>
+            </div>
+
         </section>
     </main>
     
