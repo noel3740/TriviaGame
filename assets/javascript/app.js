@@ -1,8 +1,10 @@
+//Declare triviaGame global object
 var triviaGame = {
 
     //Declare variables
     triviaQuestions: [],
     timeRemaining: undefined,
+    defaultTimeRemaining: 15,
     currentTriviaQuestion: undefined,
     currentTriviaQuestionIndex: undefined,
     timeRemainingInterval: undefined,
@@ -14,12 +16,12 @@ var triviaGame = {
     triviaModal: $("#triviaModal"),
     questionElement: $("#question"),
     answersElement: $("#answers"),
-    answerButtonDivTemplate: "<div class='col-sm-12'><button type='button' class='btn btn-outline-secondary btn-block mb-1 answerButton'></button></div>",
+    introAudio: document.getElementById("introAudio"),
+    answerButtonTemplate: "<button type='button' class='btn btn-success btn-block mb-1 font-weight-bold btn-lg answerButton'></button>",
     answerIndexAttrib: "answer-index",
     answersCorrect: 0,
     answersIncorrect: 0,
     unanswered: 0,
-    defaultTimeRemaining: 30,
 
     //This function initializes the screen divs and global variables
     initialize: function (myTriviaQuestions) {
@@ -41,11 +43,17 @@ var triviaGame = {
         triviaGame.answersIncorrect = 0;
         triviaGame.unanswered = 0;
         triviaGame.startTheGameSection.hide();
-        triviaGame.theGameSection.show();
         triviaGame.endOfGameResultsSection.hide();
-        
+
         //Get a new question from the array of questions
-        triviaGame.getNewQuestion();
+        triviaGame.getNewQuestion(false);
+
+        //Play the intro audio
+        introAudio.currentTime = 0; 
+        introAudio.play(); 
+
+        //Slowly show the game section then start the timer after it is shown
+        triviaGame.theGameSection.show(3000, ()=> {triviaGame.timeRemainingInterval = setInterval(triviaGame.updateTimeRemaining, 1000);});
     },
 
     gameOver: function () {
@@ -86,10 +94,10 @@ var triviaGame = {
 
         if (triviaGame.getCorrectAnswerIndex() == $(event.currentTarget).attr(triviaGame.answerIndexAttrib)) {
             triviaGame.answersCorrect++;
-            triviaGame.showMoal("<p>You are correct!</p>");
+            triviaGame.showMoal("<p>You are correct!</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.correctAnswerImageUrl + "'>");
         } else {
             triviaGame.answersIncorrect++;
-            triviaGame.showMoal("<p><strong>Sorry. Incorrect answer!</strong></p><p>The correct answer is '" + triviaGame.getCorrectAnswer().answer + "'.</p>");
+            triviaGame.showMoal("<p><strong>Sorry. Incorrect answer!</strong></p><p>The correct answer is '" + triviaGame.getCorrectAnswer().answer + "'.</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.incorrectAnswerImageUtl + "'>");
         }
     },
 
@@ -104,7 +112,7 @@ var triviaGame = {
 
 
     //Get the next trivia question
-    getNewQuestion: function () {
+    getNewQuestion: function (startTime) {
         triviaGame.currentTriviaQuestionIndex++;
 
         if (triviaGame.currentTriviaQuestionIndex < triviaGame.triviaQuestions.length) {
@@ -115,17 +123,20 @@ var triviaGame = {
 
             triviaGame.currentTriviaQuestion.answers.forEach((answer, index, answersArray) => {
 
-                var answerButtonDiv = $(triviaGame.answerButtonDivTemplate).find("button").text(answer.answer).attr(triviaGame.answerIndexAttrib, index);
-                answerButtonDiv.on("click", triviaGame.onAnswerChosen);
-                triviaGame.answersElement.append(answerButtonDiv);
+                var answerButton = $(triviaGame.answerButtonTemplate);
+                answerButton.text(answer.answer).attr(triviaGame.answerIndexAttrib, index);
+                answerButton.on("click", triviaGame.onAnswerChosen);
+                triviaGame.answersElement.append(answerButton);
             });
 
             //Set time remaining to default and display on screen
             triviaGame.timeRemaining = triviaGame.defaultTimeRemaining;
             triviaGame.updateTimeRemaining();
 
-            //Update time remaining every 1 second
-            triviaGame.timeRemainingInterval = setInterval(triviaGame.updateTimeRemaining, 1000);
+            if (startTime) {
+                //Update time remaining every 1 second
+                triviaGame.timeRemainingInterval = setInterval(triviaGame.updateTimeRemaining, 1000);
+            }
         } else {
             triviaGame.gameOver();
         }
@@ -133,7 +144,7 @@ var triviaGame = {
 
     //Function is run when the results modal is closed. 
     onResultsModalClosed: function () {
-        triviaGame.getNewQuestion();
+        triviaGame.getNewQuestion(true);
     }
 
 }
@@ -141,44 +152,117 @@ var triviaGame = {
 //Define trivia questions
 var myTriviaQuestions = [
     {
-        question: "Which of these is NOT a name of one of the Spice Girls?",
+        question: "What is the name of Mario's brother?",
+        correctAnswerImageUrl: "assets/images/marioCorrect.gif",
+        incorrectAnswerImageUtl: "assets/images/marioIncorrect.gif",
         answers: [
             { 
-                answer: "Sporty Spice",
+                answer: "Zelda",
                 isCorrectAnswer: false
             },
             { 
-                answer: "Fred Spice",
+                answer: "Lugi",
                 isCorrectAnswer: true
             },
             { 
-                answer: "Scary Spice",
+                answer: "Bob",
                 isCorrectAnswer: false
             },
             { 
-                answer: "Posh Spice",
+                answer: "Yoshi",
                 isCorrectAnswer: false 
             }
         ]
     },
     {
-        question: "Which NBA team won the most titles in the 90s?",
+        question: "What is the name of the hero that rescues Zelda?",
+        correctAnswerImageUrl: "assets/images/zeldaCorrect.gif",
+        incorrectAnswerImageUtl: "assets/images/zeldaIncorrect.gif",
         answers: [
             { 
-                answer: "New York Knicks",
+                answer: "Majora",
                 isCorrectAnswer: false
             },
             { 
-                answer: "Portland Trailblazers",
+                answer: "Cia",
                 isCorrectAnswer: false
             },
             { 
-                answer: "Los Angeles Lakers",
+                answer: "Ganon",
                 isCorrectAnswer: false
             },
             { 
-                answer: "Chicago Bulls",
+                answer: "Link",
                 isCorrectAnswer: true 
+            }
+        ]
+    },
+    {
+        question: "What is the name of Sonic's sidekick?",
+        correctAnswerImageUrl: "assets/images/",
+        incorrectAnswerImageUtl: "assets/images/",
+        answers: [
+            { 
+                answer: "Tails",
+                isCorrectAnswer: true
+            },
+            { 
+                answer: "Knuckles",
+                isCorrectAnswer: false
+            },
+            { 
+                answer: "Eggman",
+                isCorrectAnswer: false
+            },
+            { 
+                answer: "Rachel",
+                isCorrectAnswer: false 
+            }
+        ]
+    },
+    {
+        question: "What is the main character of Metal Gear Solid?",
+        correctAnswerImageUrl: "assets/images/",
+        incorrectAnswerImageUtl: "assets/images",
+        answers: [
+            { 
+                answer: "Ocelot",
+                isCorrectAnswer: false
+            },
+            { 
+                answer: "Liquid Snake",
+                isCorrectAnswer: false
+            },
+            { 
+                answer: "Snake",
+                isCorrectAnswer: true
+            },
+            { 
+                answer: "Big Boss",
+                isCorrectAnswer: false 
+            }
+        ]
+    },
+    {
+        question: "What company developed Pac-Man?",
+        correctAnswerImageUrl: "assets/images/",
+        incorrectAnswerImageUtl: "assets/images",
+        answers: [
+            { 
+                answer: "Namco",
+                isCorrectAnswer: true
+            },
+            { 
+                answer: "Square Enix",
+                isCorrectAnswer: false
+            },
+            { 
+                answer: "Nintendo",
+                isCorrectAnswer: true
+            },
+            { 
+                answer: "Sony",
+                isCorrectAnswer: false 
             }
         ]
     }

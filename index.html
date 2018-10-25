@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Trivia Game</title>
+    <title>Video Game Trivia</title>
     <!--Theme color for browser tab-->
-    <meta name="theme-color" content="red">
+    <meta name="theme-color" content="blue">
     <!--Favicon-->
-    <!-- <link rel="icon" sizes="192x192" href="assets/images/favIcon.ico"> -->
+    <link rel="icon" sizes="340x340" href="assets/images/favIcon.png">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">    
     <!--Custom CSS-->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -18,49 +18,40 @@
     <main class="container">
         <!--The header div-->
         <header class="jumbotron-fluid mb-5">
-            <h1 class="display-3 text-center">Trivia Game</h1>
+            <h1 class="display-3 text-center">Video Game Trivia</h1>
         </header>
 
         <!--End of game results-->
-        <section class="endOfGameResultsSection">
-            <div class="row">
-                <div class="col-sm-12">
-                    <p>Correct Answers: <span class="correctAnswersCount"></span></p>
-                </div>
-                <div class="col-sm-12">
-                    <p>Incorrect Answers: <span class="incorrectAnswersCount"></span></p>
-                </div>
-                <div class="col-sm-12">
-                    <p>Unanswered: <span class="unanswerCount"></span></p>
-                </div>
+        <section class="card text-center my-3 endOfGameResultsSection">
+            <div class="card-header">
+                <h2>Game Results</h2>
+            </div>
+            <div class="card-body">
+                <h2>Correct Answers: <span class="correctAnswersCount"></span></h2>
+                <h2>Incorrect Answers: <span class="incorrectAnswersCount"></span></h2>
+                <h2>Unanswered: <span class="unanswerCount"></span></h2>
             </div>
         </section>
 
+
         <!--Start game section-->
-        <section class="startTheGameSection">            
+        <section class="mb-3 startTheGameSection">            
             <div class="row">
                 <div class="col-sm-12 ">
-                    <button id="startButton" class="btn btn-primary btn-lg btn-block">Start Game</button>
+                    <button id="startButton" class="btn btn-primary btn-lg btn-block">Start New Game</button>
                 </div>
             </div>
         </section>
 
         <!--The game section-->
-        <section class="theGameSection text-center">
-            <div class="row">
-                <div class="col-sm-12">
-                    <p>Time Remaining: <span id="timeRemaining"></span> Seconds</p>
-                </div>
+        <section class="card text-center mb-3 theGameSection">
+            <div class="card-header">
+                <h3>Time Remaining: <span id="timeRemaining"></span> Seconds</h3>
             </div>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <p id="question">This is a question</p>
-                </div>
+            <div class="card-body">
+                <h2 id="question" class="card-title">This is a question</h2>
+                <div class="card-text" id="answers"></div>
             </div>
-
-            <div class="row" id="answers"></div>
-
         </section>
     </main>
 
@@ -76,9 +67,15 @@
             </div>
         </div>
     </div>
+
+    <!--Audio Section-->
+    <audio id="introAudio">
+        <source src="assets/sounds/Pac-Man-Intro.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <!--Custom javascript files-->

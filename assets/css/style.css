@@ -1,0 +1,42 @@
+/*Font Link*/
+@font-face {
+    font-family: "pacManFont";
+    src: url("../fonts/crackman-front.ttf");
+}
+
+/*Font Link*/
+@font-face {
+    font-family: "arcadeFont";
+    src: url("../fonts/neuropol-x-rg.TTF");
+}
+
+
+/*body element selector*/
+body {
+    background-image: url('../images/Background.jpg'); /*change the background image*/
+    background-position: center; /*center the image on the screen*/
+    background-attachment: fixed; /*fix the image to the viewport*/
+    background-repeat: no-repeat; /*Do not repeat the background image*/
+    background-size: cover;  /*scale the background image to cover the whole screen*/
+    background-color: black;
+    height: 100vh;
+    font-family: "arcadeFont";
+}
+
+/*Header element selector*/
+header {
+    font-family: "pacManFont";
+    color: yellow
+}
+
+.theGameSection, .endOfGameResultsSection {
+    background-color:rgba(255, 255, 255, 0.7);
+}
+
+#question {
+    color: #e65e19;
+}
+
+.imageCorrect {
+    width: 100%;
+}
