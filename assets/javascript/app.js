@@ -12,6 +12,7 @@ var triviaGame = {
     theGameSection: $(".theGameSection"),
     endOfGameResultsSection: $(".endOfGameResultsSection"),
     timeRemainingSpan: $("#timeRemaining"),
+    triviaModalTitle: $("#triviaModalTitle"),
     resultsDiv: $("#resultsDiv"),
     triviaModal: $("#triviaModal"),
     questionElement: $("#question"),
@@ -75,7 +76,7 @@ var triviaGame = {
             triviaGame.timeRemaining--;
         } else {
             triviaGame.unanswered++;
-            triviaGame.showMoal("<p>You ran out of time!</p>");
+            triviaGame.showMoal("Out of Time!", "<p>You ran out of time!</p>");
         }
     },
 
@@ -94,17 +95,18 @@ var triviaGame = {
 
         if (triviaGame.getCorrectAnswerIndex() == $(event.currentTarget).attr(triviaGame.answerIndexAttrib)) {
             triviaGame.answersCorrect++;
-            triviaGame.showMoal("<p>You are correct!</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.correctAnswerImageUrl + "'>");
+            triviaGame.showMoal("Correct!", "<p>You are correct!</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.correctAnswerImageUrl + "'>");
         } else {
             triviaGame.answersIncorrect++;
-            triviaGame.showMoal("<p><strong>Sorry. Incorrect answer!</strong></p><p>The correct answer is '" + triviaGame.getCorrectAnswer().answer + "'.</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.incorrectAnswerImageUtl + "'>");
+            triviaGame.showMoal("Wrong!", "<p><strong>Sorry. Incorrect answer!</strong></p><p>The correct answer is '" + triviaGame.getCorrectAnswer().answer + "'.</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.incorrectAnswerImageUtl + "'>");
         }
     },
 
     //Function to show the modal with the provided html
-    showMoal: function (resultHtml) {
+    showMoal: function (title, resultHtml) {
         clearInterval(triviaGame.timeRemainingInterval);
         triviaGame.resultsDiv.html(resultHtml);
+        triviaGame.triviaModalTitle.text(title);
         triviaGame.triviaModal.modal('show'); 
         //Close the window after 5 seconds
         setTimeout(() => triviaGame.triviaModal.modal('hide'), 5000);
@@ -112,7 +114,7 @@ var triviaGame = {
 
 
     //Get the next trivia question
-    getNewQuestion: function (startTime) {
+    getNewQuestion: function (startTimer) {
         triviaGame.currentTriviaQuestionIndex++;
 
         if (triviaGame.currentTriviaQuestionIndex < triviaGame.triviaQuestions.length) {
@@ -133,7 +135,7 @@ var triviaGame = {
             triviaGame.timeRemaining = triviaGame.defaultTimeRemaining;
             triviaGame.updateTimeRemaining();
 
-            if (startTime) {
+            if (startTimer) {
                 //Update time remaining every 1 second
                 triviaGame.timeRemainingInterval = setInterval(triviaGame.updateTimeRemaining, 1000);
             }
@@ -199,8 +201,8 @@ var myTriviaQuestions = [
     },
     {
         question: "What is the name of Sonic's sidekick?",
-        correctAnswerImageUrl: "assets/images/",
-        incorrectAnswerImageUtl: "assets/images/",
+        correctAnswerImageUrl: "assets/images/sonicCorrect.gif",
+        incorrectAnswerImageUtl: "assets/images/sonicIncorrect.gif",
         answers: [
             { 
                 answer: "Tails",
@@ -222,8 +224,8 @@ var myTriviaQuestions = [
     },
     {
         question: "What is the main character of Metal Gear Solid?",
-        correctAnswerImageUrl: "assets/images/",
-        incorrectAnswerImageUtl: "assets/images",
+        correctAnswerImageUrl: "assets/images/metalGearCorrect.gif",
+        incorrectAnswerImageUtl: "assets/images/metalGearIncorrect.gif",
         answers: [
             { 
                 answer: "Ocelot",
@@ -245,8 +247,8 @@ var myTriviaQuestions = [
     },
     {
         question: "What company developed Pac-Man?",
-        correctAnswerImageUrl: "assets/images/",
-        incorrectAnswerImageUtl: "assets/images",
+        correctAnswerImageUrl: "assets/images/pacManCorrect.gif",
+        incorrectAnswerImageUtl: "assets/images/pacManIncorrect.gif",
         answers: [
             { 
                 answer: "Namco",
