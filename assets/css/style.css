@@ -40,3 +40,8 @@ header {
 .imageCorrect {
     width: 100%;
 }
+
+.triviaModalContent {
+    background-color: #6582fa;
+    color: white;
+}

@@ -17,7 +17,10 @@ var triviaGame = {
     triviaModal: $("#triviaModal"),
     questionElement: $("#question"),
     answersElement: $("#answers"),
-    introAudio: document.getElementById("introAudio"),
+    introAudio: $("#introAudio"),
+    correctResultAudio: $("#correctResultAudio"),
+    incorrectResultsAudio: $("#incorrectResultsAudio"),
+    timesUpResultsAudio: $("#timesUpResultsAudio"),
     answerButtonTemplate: "<button type='button' class='btn btn-success btn-block mb-1 font-weight-bold btn-lg answerButton'></button>",
     answerIndexAttrib: "answer-index",
     answersCorrect: 0,
@@ -50,11 +53,17 @@ var triviaGame = {
         triviaGame.getNewQuestion(false);
 
         //Play the intro audio
-        introAudio.currentTime = 0; 
-        introAudio.play(); 
+        triviaGame.introAudio[0].currentTime = 0; 
+        triviaGame.introAudio[0].play(); 
 
-        //Slowly show the game section then start the timer after it is shown
-        triviaGame.theGameSection.show(3000, ()=> {triviaGame.timeRemainingInterval = setInterval(triviaGame.updateTimeRemaining, 1000);});
+        //Disable the game answer buttons so the user can't select until the timer starts
+        triviaGame.answersElement.find("button").attr('disabled', true);
+
+        //Slowly show the game section then start the timer and enable the answer buttons after it is shown
+        triviaGame.theGameSection.show(3000, ()=> {
+            triviaGame.timeRemainingInterval = setInterval(triviaGame.updateTimeRemaining, 1000);
+            triviaGame.theGameSection.find("button").removeAttr('disabled');
+        });
     },
 
     gameOver: function () {
@@ -76,7 +85,9 @@ var triviaGame = {
             triviaGame.timeRemaining--;
         } else {
             triviaGame.unanswered++;
-            triviaGame.showMoal("Out of Time!", "<p>You ran out of time!</p>");
+            triviaGame.showMoal("Out of Time!", "<p>You ran out of time!</p><p>The correct answer is '" + triviaGame.getCorrectAnswer().answer + "'.</p>");
+            triviaGame.timesUpResultsAudio[0].currentTime = 0;
+            triviaGame.timesUpResultsAudio[0].play();
         }
     },
 
@@ -93,12 +104,22 @@ var triviaGame = {
     //Function is run when an answer is chosen
     onAnswerChosen: function (event) {
 
+        //Clear timer if there is currently one running
+        clearInterval(triviaGame.timeRemainingInterval);
+
+        //Stop the intro audio if it's still playing
+        triviaGame.introAudio[0].pause();
+
         if (triviaGame.getCorrectAnswerIndex() == $(event.currentTarget).attr(triviaGame.answerIndexAttrib)) {
             triviaGame.answersCorrect++;
             triviaGame.showMoal("Correct!", "<p>You are correct!</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.correctAnswerImageUrl + "'>");
+            triviaGame.correctResultAudio[0].currentTime = 0;
+            triviaGame.correctResultAudio[0].play();
         } else {
             triviaGame.answersIncorrect++;
-            triviaGame.showMoal("Wrong!", "<p><strong>Sorry. Incorrect answer!</strong></p><p>The correct answer is '" + triviaGame.getCorrectAnswer().answer + "'.</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.incorrectAnswerImageUtl + "'>");
+            triviaGame.showMoal("Wrong!", "<p><strong>Sorry. Incorrect answer!</strong></p><p>The correct answer is '" + triviaGame.getCorrectAnswer().answer + "'.</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.incorrectAnswerImageUrl + "'>");
+            triviaGame.incorrectResultsAudio[0].currentTime = 0;
+            triviaGame.incorrectResultsAudio[0].play();
         }
     },
 
@@ -109,7 +130,7 @@ var triviaGame = {
         triviaGame.triviaModalTitle.text(title);
         triviaGame.triviaModal.modal('show'); 
         //Close the window after 5 seconds
-        setTimeout(() => triviaGame.triviaModal.modal('hide'), 5000);
+        setTimeout(() => triviaGame.triviaModal.modal('hide'), 7000);
     },
 
 
@@ -131,11 +152,22 @@ var triviaGame = {
                 triviaGame.answersElement.append(answerButton);
             });
 
+            //Set modal audio
+            var correctAnswerAudioSource = triviaGame.currentTriviaQuestion.correctAnswerAudioUrl ? triviaGame.currentTriviaQuestion.correctAnswerAudioUrl : "assets/sounds/Generic-Correct.mp3";
+            triviaGame.correctResultAudio.find("source").attr("src", correctAnswerAudioSource);
+            triviaGame.correctResultAudio[0].load();
+
+            var incorrectAnswerAudioSource = triviaGame.currentTriviaQuestion.incorrectAnswerAudioUrl ? triviaGame.currentTriviaQuestion.incorrectAnswerAudioUrl : "assets/sounds/Generic-Incorrect.mp3";
+            triviaGame.incorrectResultsAudio.find("source").attr("src", incorrectAnswerAudioSource);
+            triviaGame.incorrectResultsAudio[0].load();
+
             //Set time remaining to default and display on screen
             triviaGame.timeRemaining = triviaGame.defaultTimeRemaining;
             triviaGame.updateTimeRemaining();
 
             if (startTimer) {
+                //Clear the timer if there is currently one running
+                clearInterval(triviaGame.timeRemainingInterval);
                 //Update time remaining every 1 second
                 triviaGame.timeRemainingInterval = setInterval(triviaGame.updateTimeRemaining, 1000);
             }
@@ -146,6 +178,7 @@ var triviaGame = {
 
     //Function is run when the results modal is closed. 
     onResultsModalClosed: function () {
+        triviaGame.correctResultAudio[0].pause();
         triviaGame.getNewQuestion(true);
     }
 
@@ -156,7 +189,9 @@ var myTriviaQuestions = [
     {
         question: "What is the name of Mario's brother?",
         correctAnswerImageUrl: "assets/images/marioCorrect.gif",
-        incorrectAnswerImageUtl: "assets/images/marioIncorrect.gif",
+        incorrectAnswerImageUrl: "assets/images/marioIncorrect.gif",
+        correctAnswerAudioUrl: "assets/sounds/Mario-Correct.mp3",
+        incorrectAnswerAudioUrl: "assets/sounds/Mario-Incorrect.mp3",
         answers: [
             { 
                 answer: "Zelda",
@@ -179,7 +214,9 @@ var myTriviaQuestions = [
     {
         question: "What is the name of the hero that rescues Zelda?",
         correctAnswerImageUrl: "assets/images/zeldaCorrect.gif",
-        incorrectAnswerImageUtl: "assets/images/zeldaIncorrect.gif",
+        incorrectAnswerImageUrl: "assets/images/zeldaIncorrect.gif",
+        correctAnswerAudioUrl: "assets/sounds/Zelda-Correct.mp3",
+        incorrectAnswerAudioUrl: "assets/sounds/Zelda-Incorrect.mp3",
         answers: [
             { 
                 answer: "Majora",
@@ -202,7 +239,9 @@ var myTriviaQuestions = [
     {
         question: "What is the name of Sonic's sidekick?",
         correctAnswerImageUrl: "assets/images/sonicCorrect.gif",
-        incorrectAnswerImageUtl: "assets/images/sonicIncorrect.gif",
+        incorrectAnswerImageUrl: "assets/images/sonicIncorrect.gif",
+        correctAnswerAudioUrl: "assets/sounds/Sonic-Correct.mp3",
+        incorrectAnswerAudioUrl: "assets/sounds/Sonic-Incorrect.mp3",
         answers: [
             { 
                 answer: "Tails",
@@ -225,7 +264,9 @@ var myTriviaQuestions = [
     {
         question: "What is the main character of Metal Gear Solid?",
         correctAnswerImageUrl: "assets/images/metalGearCorrect.gif",
-        incorrectAnswerImageUtl: "assets/images/metalGearIncorrect.gif",
+        incorrectAnswerImageUrl: "assets/images/metalGearIncorrect.gif",
+        correctAnswerAudioUrl: "assets/sounds/Metal-Gear-Correct.mp3",
+        incorrectAnswerAudioUrl: "assets/sounds/Metal-Gear-Incorrect.mp3",
         answers: [
             { 
                 answer: "Ocelot",
@@ -248,7 +289,9 @@ var myTriviaQuestions = [
     {
         question: "What company developed Pac-Man?",
         correctAnswerImageUrl: "assets/images/pacManCorrect.gif",
-        incorrectAnswerImageUtl: "assets/images/pacManIncorrect.gif",
+        incorrectAnswerImageUrl: "assets/images/pacManIncorrect.gif",
+        correctAnswerAudioUrl: "assets/sounds/Pac-Man-Correct.mp3",
+        incorrectAnswerAudioUrl: "assets/sounds/Pac-Man-Incorrect.mp3",
         answers: [
             { 
                 answer: "Namco",
