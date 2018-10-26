@@ -29,18 +29,22 @@ header {
     color: yellow
 }
 
+/*Set the background color of the game section and end of game results section to semi-transparent white*/
 .theGameSection, .endOfGameResultsSection {
-    background-color:rgba(255, 255, 255, 0.7);
+    background-color:rgba(255, 255, 255, 0.6);
 }
 
+/*Change the text color for the question id*/
 #question {
     color: #e65e19;
 }
 
+/*Set the width of the pictures shown in the individual question results modal to 100% of it's container*/
 .imageCorrect {
     width: 100%;
 }
 
+/*Set the individual question results modal background color and text color*/
 .triviaModalContent {
     background-color: #6582fa;
     color: white;
