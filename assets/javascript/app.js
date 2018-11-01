@@ -67,7 +67,9 @@ $( document ).ready(function() {
             });
         },
 
+        //Function that will run when the game is over and all questions have been answered
         gameOver: function () {
+            //Show the end of game screen with and fill out the text on that screen
             $(".correctAnswersCount").text(triviaGame.answersCorrect);
             $(".incorrectAnswersCount").text(triviaGame.answersIncorrect);
             $(".unanswerCount").text(triviaGame.unanswered);
@@ -78,6 +80,7 @@ $( document ).ready(function() {
         },
 
         //Update the time remaining on screen and in the global variable
+        //If time is 0 then display modal that they ran out of time
         updateTimeRemaining: function () {
             
             triviaGame.timeRemainingSpan.text(triviaGame.timeRemaining);
@@ -111,12 +114,19 @@ $( document ).ready(function() {
             //Stop the intro audio if it's still playing
             triviaGame.introAudio[0].pause();
 
+            //If the user selected the correct answer
             if (triviaGame.getCorrectAnswerIndex() == $(event.currentTarget).attr(triviaGame.answerIndexAttrib)) {
+                //Increment answers correct count, show a modeal to display to the user that they were correct,
+                //and play correct answer audio
                 triviaGame.answersCorrect++;
                 triviaGame.showMoal("Correct!", "<p>You are correct!</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.correctAnswerImageUrl + "'>");
                 triviaGame.correctResultAudio[0].currentTime = 0;
                 triviaGame.correctResultAudio[0].play();
-            } else {
+            } 
+            //User did not choose the correct answer
+            else {
+                //Increment incorrect answers count, display a modal that tells the user they lost,
+                //and play incorrect answer audio.
                 triviaGame.answersIncorrect++;
                 triviaGame.showMoal("Wrong!", "<p><strong>Sorry. Incorrect answer!</strong></p><p>The correct answer is '" + triviaGame.getCorrectAnswer().answer + "'.</p><img class='imageCorrect' src='" + triviaGame.currentTriviaQuestion.incorrectAnswerImageUrl + "'>");
                 triviaGame.incorrectResultsAudio[0].currentTime = 0;
@@ -139,12 +149,15 @@ $( document ).ready(function() {
         getNewQuestion: function (startTimer) {
             triviaGame.currentTriviaQuestionIndex++;
 
+            //If we are not out of questions
             if (triviaGame.currentTriviaQuestionIndex < triviaGame.triviaQuestions.length) {
+                //Clear out the answers div and set the current question text
                 triviaGame.answersElement.empty();
                 triviaGame.currentTriviaQuestion = triviaGame.triviaQuestions[triviaGame.currentTriviaQuestionIndex];
 
                 triviaGame.questionElement.text(triviaGame.currentTriviaQuestion.question);
 
+                //Loop through all the answers associted with the current question and create buttons for each
                 triviaGame.currentTriviaQuestion.answers.forEach((answer, index, answersArray) => {
 
                     var answerButton = $(triviaGame.answerButtonTemplate);
@@ -172,7 +185,9 @@ $( document ).ready(function() {
                     //Update time remaining every 1 second
                     triviaGame.timeRemainingInterval = setInterval(triviaGame.updateTimeRemaining, 1000);
                 }
-            } else {
+            } 
+            //We are out of questions so run the game over function
+            else {
                 triviaGame.gameOver();
             }
         },
