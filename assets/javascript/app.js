@@ -195,20 +195,17 @@ $( document ).ready(function() {
             incorrectAnswerAudioUrl: "assets/sounds/Mario-Incorrect.mp3",
             answers: [
                 { 
-                    answer: "Zelda",
-                    isCorrectAnswer: false
+                    answer: "Zelda"
                 },
                 { 
                     answer: "Lugi",
                     isCorrectAnswer: true
                 },
                 { 
-                    answer: "Bob",
-                    isCorrectAnswer: false
+                    answer: "Bob"
                 },
                 { 
-                    answer: "Yoshi",
-                    isCorrectAnswer: false 
+                    answer: "Yoshi"
                 }
             ]
         },
@@ -220,16 +217,13 @@ $( document ).ready(function() {
             incorrectAnswerAudioUrl: "assets/sounds/Zelda-Incorrect.mp3",
             answers: [
                 { 
-                    answer: "Majora",
-                    isCorrectAnswer: false
+                    answer: "Majora"
                 },
                 { 
-                    answer: "Cia",
-                    isCorrectAnswer: false
+                    answer: "Cia"
                 },
                 { 
-                    answer: "Ganon",
-                    isCorrectAnswer: false
+                    answer: "Ganon"
                 },
                 { 
                     answer: "Link",
@@ -249,16 +243,13 @@ $( document ).ready(function() {
                     isCorrectAnswer: true
                 },
                 { 
-                    answer: "Knuckles",
-                    isCorrectAnswer: false
+                    answer: "Knuckles"
                 },
                 { 
-                    answer: "Eggman",
-                    isCorrectAnswer: false
+                    answer: "Eggman"
                 },
                 { 
-                    answer: "Rachel",
-                    isCorrectAnswer: false 
+                    answer: "Rachel"
                 }
             ]
         },
@@ -270,20 +261,17 @@ $( document ).ready(function() {
             incorrectAnswerAudioUrl: "assets/sounds/Metal-Gear-Incorrect.mp3",
             answers: [
                 { 
-                    answer: "Ocelot",
-                    isCorrectAnswer: false
+                    answer: "Ocelot"
                 },
                 { 
-                    answer: "Liquid Snake",
-                    isCorrectAnswer: false
+                    answer: "Liquid Snake"
                 },
                 { 
                     answer: "Snake",
                     isCorrectAnswer: true
                 },
                 { 
-                    answer: "Big Boss",
-                    isCorrectAnswer: false 
+                    answer: "Big Boss"
                 }
             ]
         },
@@ -299,16 +287,13 @@ $( document ).ready(function() {
                     isCorrectAnswer: true
                 },
                 { 
-                    answer: "Square Enix",
-                    isCorrectAnswer: false
+                    answer: "Square Enix"
                 },
                 { 
-                    answer: "Nintendo",
-                    isCorrectAnswer: true
+                    answer: "Nintendo"
                 },
                 { 
-                    answer: "Sony",
-                    isCorrectAnswer: false 
+                    answer: "Sony"
                 }
             ]
         }
