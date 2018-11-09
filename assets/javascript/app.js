@@ -140,7 +140,7 @@ $( document ).ready(function() {
             triviaGame.resultsDiv.html(resultHtml);
             triviaGame.triviaModalTitle.text(title);
             triviaGame.triviaModal.modal('show'); 
-            //Close the window after 5 seconds
+            //Close the window after 7 seconds
             setTimeout(() => triviaGame.triviaModal.modal('hide'), 7000);
         },
 
